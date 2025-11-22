@@ -132,5 +132,4 @@ void setup() {
 void loop() {
     handle_bluetooth_commands();
     minisumo_loop();
-    delay(CONTROL_LOOP_DELAY_MS);
 }

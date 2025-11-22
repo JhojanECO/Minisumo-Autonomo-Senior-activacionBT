@@ -23,7 +23,7 @@
 #define BT_DEVICE_NAME "Hugoautonomo"  // Nombre visible en Bluetooth
 
 // Arranque y PID
-#define PID_ENABLED 1  // 1 = usa PID despues del giro inicial, 0 = solo hace el giro y se detiene
+#define PID_ENABLED 0  // 1 = usa PID despues del giro inicial, 0 = solo hace el giro y se detiene
 
 #define START1_SPEED_LEFT 150.0f    // Estrategia 1: rueda izquierda (positivo avanza, negativo retrocede)
 #define START1_SPEED_RIGHT -150.0f  // Estrategia 1: rueda derecha
@@ -54,6 +54,5 @@
 #define BASE_SPEED_BOOST 250.0f    // Velocidad base con turbo
 
 // PID y lazo de control
-#define CONTROL_LOOP_DELAY_MS 10  // Retardo del lazo principal en ms
 #define KP_DEFAULT 1.5f           // Ganancia proporcional del PID
 #define KD_DEFAULT 0.2f           // Ganancia derivativa del PID
