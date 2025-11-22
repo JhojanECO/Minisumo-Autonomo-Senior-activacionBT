@@ -87,6 +87,10 @@ static int select_strategy(void) {
 static void minisumo_loop(void) {
     if (go_is_active()) {
         control_logic_execute_start(&robot_state);
+        if (!PID_ENABLED) {
+            motor_control_stop();
+            return;
+        }
         const sensor_measurement_t measurement = sensor_array_read();
         const uint32_t now_ms = millis();
         const float base_speed =
@@ -103,10 +107,12 @@ static void minisumo_loop(void) {
 void setup() {
     Serial.begin(115200);
     Serial.println("Inicializando Bluetooth...");
-    if (!SerialBT.begin("Hugoautonomo")) {// Nombre del dispositivo Bluetooth
+    if (!SerialBT.begin(BT_DEVICE_NAME)) {// Nombre del dispositivo Bluetooth
         Serial.println("Fallo al iniciar Bluetooth Serial");
     } else {
-        Serial.println("Bluetooth listo (nombre: MinisumoBT)");
+        Serial.print("Bluetooth listo (nombre: ");
+        Serial.print(BT_DEVICE_NAME);
+        Serial.println(")");
         SerialBT.println("Conectado a Minisumo. Envia '1' para GO y '0' para detener.");
     }
     status_led_init();

@@ -46,16 +46,15 @@ especificos para sensores, motores, LED de estado y logica de estrategia.
 5. **Selecciona el entorno**: en la barra inferior veras `PIO Home`. Abrelo, ve a *Projects* y confirma que `esp32dev` aparezca como Default Environment.
 6. **Compila y sube desde la GUI**:
    - Usa los botones de PlatformIO (check para `Build`, flecha para `Upload`).
-   - Si prefieres la terminal integrada, ejecuta `pio run -e esp32dev` y `pio run -t upload -e esp32dev --upload-port COMx`.
-7. **Monitor serie (opcional)**: pulsa el icono del enchufe en la barra lateral de PlatformIO o corre `pio device monitor --port COMx --baud 115200` para logs. El control GO se hace via Bluetooth, no necesita cable.
+   - Si prefieres la terminal integrada, ejecuta `pio run -e esp32dev` y `pio run -t upload -e esp32dev` (PlatformIO detecta el ultimo puerto conectado). Solo si tienes varios dispositivos conectados especifica `--upload-port`.
+7. **Monitor serie (opcional)**: pulsa el icono del enchufe en la barra lateral de PlatformIO o corre `pio device monitor --baud 115200` (elige automaticamente el ultimo puerto). Si hay varios puertos, usa `pio device list` para verlos y pasa `--port` solo cuando lo necesites. El control GO se hace via Bluetooth, no necesita cable.
 8. **Gestiona configuraciones**: ajusta pines y constantes en `src/hardware_config.h` o variables globales. Si necesitas cambiar particiones o flags avanzados, edita `platformio.ini` usando `board_build.*` o archivos en `src/`.
 
 Tip: si usas Visual Studio (no Code), instala la CLI de PlatformIO y Git por separado, clona el repositorio con `git clone ...` y ejecuta los comandos desde la terminal de PowerShell o CMD.
 
 ## Flujo de trabajo con PlatformIO
 
-Todos los comandos se ejecutan desde la raiz del proyecto. Ajusta `COMx` por el puerto real
-(puedes descubrirlo con `pio device list`). El entorno por defecto es `esp32dev`.
+Todos los comandos se ejecutan desde la raiz del proyecto. PlatformIO elige por defecto el ultimo puerto serie detectado. Si hay varios dispositivos conectados, averigua el puerto con `pio device list` y pasa `--upload-port` o `--port` segun el caso. El entorno por defecto es `esp32dev`.
 
 ### Compilar
 
@@ -66,7 +65,7 @@ pio run -e esp32dev
 ### Cargar firmware
 
 ```bash
-pio run -t upload -e esp32dev --upload-port COMx
+pio run -t upload -e esp32dev
 ```
 
 ### Limpiar y recompilar
@@ -79,14 +78,14 @@ pio run -e esp32dev
 ### Monitor serie
 
 ```bash
-pio device monitor --port COMx --baud 115200
+pio device monitor --baud 115200
 ```
 
 Sal del monitor con `Ctrl+]`. Para automatizar carga + monitor:
 
 ```bash
-pio run -t upload -e esp32dev --upload-port COMx && ^
-pio device monitor --port COMx --baud 115200
+pio run -t upload -e esp32dev && ^
+pio device monitor --baud 115200
 ```
 
 ### Control via Bluetooth serie

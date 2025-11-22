@@ -25,13 +25,14 @@ void control_logic_reset(robot_state_t *state) {
     state->central_high_begin_ms = 0;
 }
 
-static void random_turn_direction(float *left, float *right) {
-    if (random(0, 2) == 0) {
-        *left = 150.0f;
-        *right = -150.0f;
+static void strategy3_turn_direction(float *left, float *right) {
+    const bool use_cw = START3_RANDOM_DIRECTION ? (random(0, 2) == 0) : true;
+    if (use_cw) {
+        *left = START3_SPEED_LEFT_CW;
+        *right = START3_SPEED_RIGHT_CW;
     } else {
-        *left = -150.0f;
-        *right = 150.0f;
+        *left = START3_SPEED_LEFT_CCW;
+        *right = START3_SPEED_RIGHT_CCW;
     }
 }
 
@@ -46,19 +47,19 @@ void control_logic_execute_start(robot_state_t *state) {
 
     switch (state->strategy) {
         case 1:
-            left = 150.0f;
-            right = -150.0f;
-            duration_ms = 160;
+            left = START1_SPEED_LEFT;
+            right = START1_SPEED_RIGHT;
+            duration_ms = START1_DURATION_MS;
             break;
         case 2:
-            left = -150.0f;
-            right = 150.0f;
-            duration_ms = 160;
+            left = START2_SPEED_LEFT;
+            right = START2_SPEED_RIGHT;
+            duration_ms = START2_DURATION_MS;
             break;
         case 3:
         default:
-            random_turn_direction(&left, &right);
-            duration_ms = 260;
+            strategy3_turn_direction(&left, &right);
+            duration_ms = START3_DURATION_MS;
             break;
     }
 
